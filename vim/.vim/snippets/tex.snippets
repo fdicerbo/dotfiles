@@ -11,8 +11,12 @@ snippet nuc \newunicodechar
 #DeclareMathOperator
 snippet dmo \DeclareMathOperator
 	\DeclareMathOperator{${1}}{${2}} ${0}
-
 #DOCUMENT
+snippet docu "document template"
+	\documentclass[${2:options}]{${1:article}}
+	\begin{document}
+	${0}
+	\end{document}
 # \begin{}...\end{}
 snippet begin \begin{} ... \end{} block
 	\begin{${1:env}}
