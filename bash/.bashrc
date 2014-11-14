@@ -112,3 +112,13 @@ if ! shopt -oq posix; then
     . /etc/bash_completion
   fi
 fi
+
+if [ -d ~/.bash/completion ];
+then
+    for f in `ls ~/.bash/completion`;
+    do
+        echo "including $f"
+        #. $f 
+    done
+fi
+
