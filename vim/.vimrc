@@ -59,6 +59,9 @@ autocmd BufEnter * RainbowParenthesesLoadRound
 autocmd BufEnter * RainbowParenthesesLoadSquare
 augroup END
 
+Plugin 'tpope/vim-fugitive'
+
+
 Plugin 'bling/vim-airline'
     let g:airline#extensions#tabline#enabled=1
     let g:airline_left_sep=''

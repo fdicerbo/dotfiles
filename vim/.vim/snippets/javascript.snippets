@@ -10,13 +10,6 @@ snippet el "else {"
 	else {
 		${0}
 	}
-snippet fu "function [name](...) {"
-   /*
-	*  $1
-	*/
-	function ${1}(${2}) {
-	    ${0}
-	}
 snippet iife "(function () {"
 	(function () {
 		${0}
@@ -41,9 +34,11 @@ snippet aft "afterEach(function () {"
 	afterEach(function () {
 		${0}
 	});
-
 snippet copy "SAP copyright"
 	/* Copyright SAP SE, 2014 */
-
 snippet token "Add auth token to AJAX request"
 	beforeSend: function(request) { setTokenHeaders(request) },
+snippet func "function definition"
+	function ${1}(${2}){
+		${0}
+	}
