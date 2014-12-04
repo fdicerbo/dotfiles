@@ -29,3 +29,5 @@ function pull(){
 	read
 	git pull --rebase origin master
 }
+
+alias duh='du -h --max-depth=1'

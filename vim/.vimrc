@@ -9,7 +9,6 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
-
 " Autocomplete awesomeness
 Plugin 'marijnh/tern_for_vim'
 
@@ -26,53 +25,55 @@ Plugin 'SirVer/ultisnips'
 	let g:UltiSnipsEditSplit="vertical"
 	let g:UltiSnipsSnippetsDir="~/.vim/snippets"
 
-
-Plugin 'kien/rainbow_parentheses.vim'
-let g:rbpt_max = 21
-let g:rbpt_colorpairs = [
-\['blue', '#FF6000'],
-\['cyan', '#00FFFF'],
-\['darkmagenta', '#CC00FF'],
-\['yellow', '#FFFF00'],
-\['red', '#FF0000'],
-\['darkgreen', '#00FF00'],
-\['White', '#c0c0c0'],
-\['blue', '#FF6000'],
-\['cyan', '#00FFFF'],
-\['darkmagenta', '#CC00FF'],
-\['yellow', '#FFFF00'],
-\['red', '#FF0000'],
-\['darkgreen', '#00FF00'],
-\['White', '#c0c0c0'],
-\['blue', '#FF6000'],
-\['cyan', '#00FFFF'],
-\['darkmagenta', '#CC00FF'],
-\['yellow', '#FFFF00'],
-\['red', '#FF0000'],
-\['darkgreen', '#00FF00'],
-\['White', '#c0c0c0'],
-\]
-augroup RainbowParentheses
-autocmd!
-autocmd VimEnter * RainbowParenthesesActivate
-autocmd BufEnter * RainbowParenthesesLoadRound
-autocmd BufEnter * RainbowParenthesesLoadSquare
-augroup END
-
 Plugin 'tpope/vim-fugitive'
 
+Plugin 'Chiel92/vim-autoformat'
+    " https://github.com/beautify-web/js-beautify
+    :nnoremap <F3> :Autoformat<CR>
+    let g:formatprg_javascript = "js-beautifier"
+    let g:formatprg_args_expr_javascript = '"-w80 -s".&shiftwidth'
+    let g:formatprg_java = "astyle"
+    let g:formatprg_args_expr_java = '" --mode=java --style=java --add-brackets --break-after-logical --max-code-length=80 --break-closing-brackets -pcHs".&shiftwidth'
+    " let g:formatprg_args_expr_javascript = '"--mode=java --style=java -pcHs".&shiftwidth'
+"    let g:formatprg_args_expr_cs = '"--mode=java --style=java -s".&shiftwidth'
+"
+Plugin 'kien/ctrlp.vim'
+    set wildignore+=*/tmp/*,*.so,*.swp,*.zip     " MacOSX/Linux"
+    let g:ctrlp_working_path_mode = 'ra'
+    let g:ctrlp_custom_ignore = '\v[\/]\.(git|hg|svn)$'
+
+Plugin 'tomtom/tcomment_vim'
+
+Plugin 'xolox/vim-easytags'
+
+Plugin 'xolox/vim-misc'
 
 Plugin 'bling/vim-airline'
     let g:airline#extensions#tabline#enabled=1
-    let g:airline_left_sep=''
-    let g:airline_right_sep=''
+    let g:airline_left_sep=' '
+    let g:airline_right_sep=' '
+    let g:airline_powerline_fonts = 1
 
 Plugin 'edkolev/promptline.vim'
     let g:promptline_powerline_symbols=0
     let g:promptline_theme = 'airline'
     let g:promptline_preset = 'clear'
+    let g:airline_theme='dark'
 
 Plugin 'altercation/vim-colors-solarized'
+
+Plugin 'Raimondi/delimitMate'
+
+Plugin 'Yggdroot/indentLine'
+    set list lcs=tab:\|\ 
+
+Plugin 'scrooloose/nerdtree'
+    " autocmd vimenter * NERDTree
+    let NERDTreeQuitOnOpen=1
+    map <leader>e :NERDTreeFind<CR>
+    map <C-n> :NERDTreeToggle<CR>
+    " close nerdtree if it's the only buffer left
+    autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -88,19 +89,36 @@ filetype plugin indent on    " required
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-set et
-set ts=4
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+set expandtab
+" set colorcolumn=81
+set wildmenu " show list instead of just  completing
+
+nnoremap <S-Tab> :bnext<CR>
+" nnoremap <C-S-Tab> :bprevious<CR>
 
 set number
 syntax enable
 set background=dark
-colorscheme solarized
+colorscheme peachpuff
 set t_Co=256
 
 " Fast window resizing with +/- keys (horizontal); / and * keys (vertical)
 if bufwinnr(1)
    map <kPlus> <S-C-W><S-C-W>
    map <kMinus> <C-W><C-W>
-   map <kDivide> <c-w><
-   map <kMultiply> <c-w>>
+   map <kDivide> <C-W><
+   map <kMultiply> <C-W>>
 endif
+
+
+:" Only do this part when compiled with support for autocommands.
+:if has("autocmd")
+:  autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+:endif
+:setlocal completefunc=javacomplete#CompleteParamsInfo
+
+autocmd BufWritePost * exe ":UpdateTags"
+map <F4> :execute "vimgrep /" . expand("<cword>") . "/j **/*.java" <Bar> cw<CR>
